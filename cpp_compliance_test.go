@@ -1,16 +1,16 @@
-package main
+package box2d_test
 
 import (
 	"fmt"
 	"math"
-	"os"
 	"sort"
+	"testing"
 
 	"github.com/bytearena/box2d"
 	"github.com/pmezard/go-difflib/difflib"
 )
 
-func main() {
+func TestCPPCompliance(t *testing.T) {
 
 	// Define the gravity vector.
 	gravity := box2d.MakeB2Vec2(0.0, -10.0)
@@ -264,11 +264,7 @@ func main() {
 		}
 	}
 
-	if output == expected {
-		println("\x1b[32mMatching c++ reference. Success.\x1b[0m")
-		os.Exit(0)
-	} else {
-		println("\x1b[31mNOT Matching c++ reference. Failure.\x1b[0m")
+	if output != expected {
 
 		diff := difflib.UnifiedDiff{
 			A:        difflib.SplitLines(expected),
@@ -278,7 +274,6 @@ func main() {
 			Context:  0,
 		}
 		text, _ := difflib.GetUnifiedDiffString(diff)
-		fmt.Printf("\x1b[31m" + text + "\x1b[0m")
-		os.Exit(1)
+		t.Fatalf("NOT Matching c++ reference. Failure: \n%s", text)
 	}
 }
