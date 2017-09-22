@@ -1,4 +1,4 @@
-# Box2D.go
+# Box2D.go ![](https://travis-ci.org/ByteArena/box2d.svg?branch=master)
 
 ## What is this ?
 
