@@ -1,4 +1,4 @@
-package main
+package box2d_test
 
 // Based on https://github.com/erincatto/Box2D/blob/master/Box2D/Testbed/Tests/CharacterCollision.h
 
