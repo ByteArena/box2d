@@ -36,7 +36,7 @@ Right now, there's a test (passing) checking all the supported body shape collis
 
 ## Usage example
 
-Have a look at `cmd/test-character-collision`.
+Have a look at `cpp_compliance_test.go`.
 
 ## License of the original Box2D (C++)
 
