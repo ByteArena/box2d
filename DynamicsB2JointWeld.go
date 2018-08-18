@@ -358,7 +358,7 @@ func (joint *B2WeldJoint) SolvePositionConstraints(data B2SolverData) bool {
 		cA.OperatorMinusInplace(B2Vec2MulScalar(mA, P))
 		aA -= iA * B2Vec2Cross(rA, P)
 
-		cB.OperatorMinusInplace(B2Vec2MulScalar(mB, P))
+		cB.OperatorPlusInplace(B2Vec2MulScalar(mB, P))
 		aB += iB * B2Vec2Cross(rB, P)
 	} else {
 		C1 := B2Vec2Sub(B2Vec2Sub(B2Vec2Add(cB, rB), cA), rA)
