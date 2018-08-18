@@ -310,7 +310,7 @@ func (m B2Mat22) Solve(b B2Vec2) B2Vec2 {
 
 	return MakeB2Vec2(
 		det*(a22*b.X-a12*b.Y),
-		det*(a11*b.Y-a21*b.Y),
+		det*(a11*b.Y-a21*b.X),
 	)
 }
 
