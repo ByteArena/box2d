@@ -345,7 +345,7 @@ func (joint *B2PrismaticJoint) InitVelocityConstraints(data B2SolverData) {
 		vA.OperatorMinusInplace(B2Vec2MulScalar(mA, P))
 		wA -= iA * LA
 
-		vB.OperatorMinusInplace(B2Vec2MulScalar(mB, P))
+		vB.OperatorPlusInplace(B2Vec2MulScalar(mB, P))
 		wB += iB * LB
 	} else {
 		joint.M_impulse.SetZero()
