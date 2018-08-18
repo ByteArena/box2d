@@ -73,6 +73,9 @@ type B2MotorJoint struct {
 // J = [-I -r1_skew I r2_skew ]
 // Identity used:
 // w k % (rx i + ry j) = w * (-ry i + rx j)
+//
+// r1 = offset - c1
+// r2 = -c2
 
 // Angle constraint
 // Cdot = w2 - w1
@@ -133,11 +136,10 @@ func (joint *B2MotorJoint) InitVelocityConstraints(data B2SolverData) {
 	qB := MakeB2RotFromAngle(aB)
 
 	// Compute the effective mass matrix.
-	joint.M_rA = B2RotVec2Mul(qA, joint.M_localCenterA.OperatorNegate())
+	joint.M_rA = B2RotVec2Mul(qA, B2Vec2Sub(joint.M_linearOffset, joint.M_localCenterA))
 	joint.M_rB = B2RotVec2Mul(qB, joint.M_localCenterB.OperatorNegate())
 
 	// J = [-I -r1_skew I r2_skew]
-	//     [ 0       -1 0       1]
 	// r_skew = [-ry; rx]
 
 	// Matlab
@@ -150,6 +152,7 @@ func (joint *B2MotorJoint) InitVelocityConstraints(data B2SolverData) {
 	iA := joint.M_invIA
 	iB := joint.M_invIB
 
+	// Upper 2 by 2 of K for point to point
 	var K B2Mat22
 	K.Ex.X = mA + mB + iA*joint.M_rA.Y*joint.M_rA.Y + iB*joint.M_rB.Y*joint.M_rB.Y
 	K.Ex.Y = -iA*joint.M_rA.X*joint.M_rA.Y - iB*joint.M_rB.X*joint.M_rB.Y
@@ -163,7 +166,7 @@ func (joint *B2MotorJoint) InitVelocityConstraints(data B2SolverData) {
 		joint.M_angularMass = 1.0 / joint.M_angularMass
 	}
 
-	joint.M_linearError = B2Vec2Sub(B2Vec2Sub(B2Vec2Sub(B2Vec2Add(cB, joint.M_rB), cA), joint.M_rA), B2RotVec2Mul(qA, joint.M_linearOffset))
+	joint.M_linearError = B2Vec2Sub(B2Vec2Sub(B2Vec2Add(cB, joint.M_rB), cA), joint.M_rA)
 	joint.M_angularError = aB - aA - joint.M_angularOffset
 
 	if data.Step.WarmStarting {
