@@ -197,7 +197,7 @@ func (j B2Joint) GetNext() B2JointInterface { // returns pointer
 
 //@goadd
 func (j *B2Joint) SetNext(next B2JointInterface) { // has to be backed by pointer
-	j.SetNext(next)
+	j.M_next = next
 }
 
 func (j B2Joint) GetPrev() B2JointInterface { // returns pointer
@@ -377,15 +377,8 @@ func MakeB2Joint(def B2JointDefInterface) *B2Joint { // def has to be backed by 
 	res.M_islandFlag = false
 	res.M_userData = def.GetUserData()
 
-	res.M_edgeA.Joint = nil
-	res.M_edgeA.Other = nil
-	res.M_edgeA.Prev = nil
-	res.M_edgeA.Next = nil
-
-	res.M_edgeB.Joint = nil
-	res.M_edgeB.Other = nil
-	res.M_edgeB.Prev = nil
-	res.M_edgeB.Next = nil
+	res.M_edgeA = &B2JointEdge{}
+	res.M_edgeB = &B2JointEdge{}
 
 	return &res
 }

@@ -275,7 +275,7 @@ func (world *B2World) DestroyBody(b *B2Body) {
 	world.M_bodyCount--
 }
 
-func (world *B2World) CreateJoint(def *B2JointDef) B2JointInterface {
+func (world *B2World) CreateJoint(def B2JointDefInterface) B2JointInterface {
 	B2Assert(world.IsLocked() == false)
 	if world.IsLocked() {
 		return nil
@@ -312,11 +312,11 @@ func (world *B2World) CreateJoint(def *B2JointDef) B2JointInterface {
 	}
 	j.GetBodyB().M_jointList = j.GetEdgeB()
 
-	bodyA := def.BodyA
-	bodyB := def.BodyB
+	bodyA := def.GetBodyA()
+	bodyB := def.GetBodyB()
 
 	// If the joint prevents collisions, then flag any contacts for filtering.
-	if def.CollideConnected == false {
+	if def.IsCollideConnected() == false {
 		edge := bodyB.GetContactList()
 		for edge != nil {
 			if edge.Other == bodyA {
@@ -1274,6 +1274,8 @@ func (world *B2World) Dump() {
 
 	fmt.Print(fmt.Printf("b2Body** bodies = (b2Body**)b2Alloc(%d * sizeof(b2Body*));\n", world.M_bodyCount))
 	//fmt.Print("b2Joint** joints = (b2Joint**)b2Alloc(%d * sizeof(b2Joint*));\n", m_jointCount)
+	fmt.Print(fmt.Printf("b2Joint** joints = (b2Joint**)b2Alloc(%d * sizeof(b2Joint*));\n", world.M_jointCount))
+
 	i := 0
 	for b := world.M_bodyList; b != nil; b = b.M_next {
 		b.M_islandIndex = i
