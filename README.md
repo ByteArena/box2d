@@ -16,7 +16,7 @@ https://s3.eu-central-1.amazonaws.com/bytearena-public/ba-prod-twitter.mp4
 
 We kept the source code as close to the C++ as we possibly could. So the documentation you'll find on Box2D is relevant.
 
-http://box2d.org/manual.pdf
+https://box2d.org/documentation/
 
 ## API changes
 
