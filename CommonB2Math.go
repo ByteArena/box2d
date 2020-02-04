@@ -718,10 +718,18 @@ func B2Vec2Clamp(a, low, high B2Vec2) B2Vec2 {
 }
 
 func B2FloatClamp(a, low, high float64) float64 {
-	return math.Max(
-		low,
-		math.Min(a, high),
-	)
+	var b, c float64
+	if B2IsValid(high) {
+		b = math.Min(a, high)
+	} else {
+		b = a
+	}
+	if B2IsValid(low) {
+		c = math.Max(b, low)
+	} else {
+		c = b
+	}
+	return c
 }
 
 /// "Next Largest Power of 2
