@@ -2,7 +2,6 @@ package box2d
 
 import (
 	"math"
-	"unsafe"
 )
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -41,11 +40,19 @@ type B2ContactID B2ContactFeature
 /// Contact ids to facilitate warm starting.
 ///< Used to quickly compare contact ids.
 func (v B2ContactID) Key() uint32 {
-	return *(*uint32)(unsafe.Pointer(&v.IndexA)) // here we do not care about Endianness; see https://stackoverflow.com/a/7380354
+	var key uint32 = 0
+	key |= uint32(v.IndexA)
+	key |= uint32(v.IndexB) << 8
+	key |= uint32(v.TypeA) << 16
+	key |= uint32(v.TypeB) << 24
+	return key
 }
 
-func (v B2ContactID) SetKey(key uint32) {
-	*(*uint32)(unsafe.Pointer(&v.IndexA)) = key
+func (v *B2ContactID) SetKey(key uint32) {
+	(*v).IndexA = uint8(key & 0xFF)
+	(*v).IndexB = byte(key >> 8 & 0xFF)
+	(*v).TypeA = byte(key >> 16 & 0xFF)
+	(*v).TypeB = byte(key >> 24 & 0xFF)
 }
 
 /// A manifold point is a contact point belonging to a contact
