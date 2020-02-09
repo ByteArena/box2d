@@ -734,6 +734,20 @@ func (tree B2DynamicTree) ValidateMetrics(index int) {
 }
 
 func (tree B2DynamicTree) Validate() {
+	tree.ValidateStructure(tree.M_root)
+	tree.ValidateMetrics(tree.M_root)
+
+	freeCount := 0
+	freeIndex := tree.M_freeList
+	for freeIndex != B2_nullNode {
+		B2Assert(0 <= freeIndex && freeIndex < tree.M_nodeCapacity)
+		freeIndex = tree.M_nodes[freeIndex].Next
+		freeCount++
+	}
+
+	B2Assert(tree.GetHeight() == tree.ComputeTotalHeight())
+
+	B2Assert(tree.M_nodeCount+freeCount == tree.M_nodeCapacity)
 }
 
 func (tree B2DynamicTree) GetMaxBalance() int {
