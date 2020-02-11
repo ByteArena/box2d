@@ -30,6 +30,11 @@ func NewB2PolygonShape() *B2PolygonShape {
 	return &res
 }
 
+func (poly *B2PolygonShape) GetVertex(index int) *B2Vec2 {
+	B2Assert(0 <= index && index < poly.M_count)
+	return &poly.M_vertices[index]
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
@@ -107,6 +112,12 @@ func ComputeCentroid(vs []B2Vec2, count int) B2Vec2 {
 	// pRef is the reference point for forming triangles.
 	// It's location doesn't change the result (except for rounding error).
 	pRef := MakeB2Vec2(0.0, 0.0)
+
+	// This code would put the reference point inside the polygon.
+	for i := 0; i < count; i++ {
+		pRef.OperatorPlusInplace(vs[i])
+	}
+	pRef.OperatorScalarMulInplace(1.0 / float64(count))
 
 	inv3 := 1.0 / 3.0
 
