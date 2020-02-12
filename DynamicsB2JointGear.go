@@ -467,9 +467,9 @@ func (joint *B2GearJoint) Dump() {
 	fmt.Printf("  b2GearJointDef jd;\n")
 	fmt.Printf("  jd.bodyA = bodies[%d];\n", indexA)
 	fmt.Printf("  jd.bodyB = bodies[%d];\n", indexB)
-	fmt.Printf("  jd.collideConnected = bool(%d);\n", joint.M_collideConnected)
+	fmt.Printf("  jd.collideConnected = bool(%v);\n", joint.M_collideConnected)
 	fmt.Printf("  jd.joint1 = joints[%d];\n", index1)
 	fmt.Printf("  jd.joint2 = joints[%d];\n", index2)
-	fmt.Printf("  jd.ratio = %.15lef;\n", joint.M_ratio)
+	fmt.Printf("  jd.ratio = %.15f;\n", joint.M_ratio)
 	fmt.Printf("  joints[%d] = m_world.CreateJoint(&jd);\n", joint.M_index)
 }

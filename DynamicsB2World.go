@@ -1269,7 +1269,7 @@ func (world *B2World) Dump() {
 		return
 	}
 
-	fmt.Print(fmt.Printf("b2Vec2 g(%.15lef, %.15lef);\n", world.M_gravity.X, world.M_gravity.Y))
+	fmt.Print(fmt.Printf("b2Vec2 g(%.15f, %.15f);\n", world.M_gravity.X, world.M_gravity.Y))
 	fmt.Print("m_world.SetGravity(g);\n")
 
 	fmt.Print(fmt.Printf("b2Body** bodies = (b2Body**)b2Alloc(%d * sizeof(b2Body*));\n", world.M_bodyCount))
