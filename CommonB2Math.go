@@ -695,7 +695,7 @@ func B2IsProjectedPointOnLineSegment(v1 B2Vec2, v2 B2Vec2, p B2Vec2) bool {
 }
 
 /// Get projected point p' of p on line v1,v2
-func b2ProjectPointOnLine(v1 B2Vec2, v2 B2Vec2, p B2Vec2) B2Vec2 {
+func B2ProjectPointOnLine(v1 B2Vec2, v2 B2Vec2, p B2Vec2) B2Vec2 {
 	e1 := B2Vec2{v2.X - v1.X, v2.Y - v1.Y}
 	e2 := B2Vec2{p.X - v1.X, p.Y - v1.Y}
 	valDp := B2Vec2Dot(e1, e2)
