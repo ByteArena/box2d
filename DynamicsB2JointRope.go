@@ -286,9 +286,9 @@ func (joint *B2RopeJoint) Dump() {
 	fmt.Printf("  b2RopeJointDef jd;\n")
 	fmt.Printf("  jd.bodyA = bodies[%d];\n", indexA)
 	fmt.Printf("  jd.bodyB = bodies[%d];\n", indexB)
-	fmt.Printf("  jd.collideConnected = bool(%d);\n", joint.M_collideConnected)
-	fmt.Printf("  jd.localAnchorA.Set(%.15lef, %.15lef);\n", joint.M_localAnchorA.X, joint.M_localAnchorA.Y)
-	fmt.Printf("  jd.localAnchorB.Set(%.15lef, %.15lef);\n", joint.M_localAnchorB.X, joint.M_localAnchorB.Y)
-	fmt.Printf("  jd.maxLength = %.15lef;\n", joint.M_maxLength)
+	fmt.Printf("  jd.collideConnected = bool(%v);\n", joint.M_collideConnected)
+	fmt.Printf("  jd.localAnchorA.Set(%.15f, %.15f);\n", joint.M_localAnchorA.X, joint.M_localAnchorA.Y)
+	fmt.Printf("  jd.localAnchorB.Set(%.15f, %.15f);\n", joint.M_localAnchorB.X, joint.M_localAnchorB.Y)
+	fmt.Printf("  jd.maxLength = %.15f;\n", joint.M_maxLength)
 	fmt.Printf("  joints[%d] = m_world.CreateJoint(&jd);\n", joint.M_index)
 }
