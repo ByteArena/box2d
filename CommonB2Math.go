@@ -685,6 +685,26 @@ func B2TransformMulT(A, B B2Transform) B2Transform {
 	return MakeB2TransformByPositionAndRotation(p, q)
 }
 
+/// Check if the projected testpoint onto the line is on the line segment
+func B2IsProjectedPointOnLineSegment(v1 B2Vec2, v2 B2Vec2, p B2Vec2) bool {
+	e1 := B2Vec2{v2.X - v1.X, v2.Y - v1.Y}
+	recArea := B2Vec2Dot(e1, e1)
+	e2 := B2Vec2{p.X - v1.X, p.Y - v1.Y}
+	v := B2Vec2Dot(e1, e2)
+	return v >= 0.0 && v <= recArea
+}
+
+/// Get projected point p' of p on line v1,v2
+func B2ProjectPointOnLine(v1 B2Vec2, v2 B2Vec2, p B2Vec2) B2Vec2 {
+	e1 := B2Vec2{v2.X - v1.X, v2.Y - v1.Y}
+	e2 := B2Vec2{p.X - v1.X, p.Y - v1.Y}
+	valDp := B2Vec2Dot(e1, e2)
+	len2 := e1.X*e1.X + e1.Y*e1.Y
+	p1 := B2Vec2{v1.X + (valDp*e1.X)/len2,
+		v1.Y + (valDp*e1.Y)/len2}
+	return p1
+}
+
 func B2Vec2Abs(a B2Vec2) B2Vec2 {
 	return MakeB2Vec2(math.Abs(a.X), math.Abs(a.Y))
 }
@@ -718,10 +738,18 @@ func B2Vec2Clamp(a, low, high B2Vec2) B2Vec2 {
 }
 
 func B2FloatClamp(a, low, high float64) float64 {
-	return math.Max(
-		low,
-		math.Min(a, high),
-	)
+	var b, c float64
+	if B2IsValid(high) {
+		b = math.Min(a, high)
+	} else {
+		b = a
+	}
+	if B2IsValid(low) {
+		c = math.Max(b, low)
+	} else {
+		c = b
+	}
+	return c
 }
 
 /// "Next Largest Power of 2
@@ -743,13 +771,8 @@ func B2IsPowerOfTwo(x uint32) bool {
 }
 
 func (sweep B2Sweep) GetTransform(xf *B2Transform, beta float64) {
-
-	xf.P = B2Vec2Add(
-		B2Vec2MulScalar(1.0-beta, sweep.C0),
-		B2Vec2MulScalar(beta, sweep.C),
-	)
-
-	angle := (1.0-beta)*sweep.A0 + beta*sweep.A
+	xf.P = B2Vec2Add(sweep.C0, B2Vec2MulScalar(beta, B2Vec2Sub(sweep.C, sweep.C0)))
+	angle := sweep.A0 + (sweep.A-sweep.A0)*beta
 	xf.Q.Set(angle)
 
 	// Shift to origin
