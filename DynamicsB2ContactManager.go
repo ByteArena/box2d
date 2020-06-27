@@ -8,7 +8,7 @@ type B2ContactManager struct {
 	M_contactListener B2ContactListenerInterface
 }
 
-var b2_defaultFilter B2ContactFilterInterface
+var b2_defaultFilter = &B2ContactFilter{}
 var b2_defaultListener B2ContactListenerInterface
 
 func MakeB2ContactManager() B2ContactManager {
